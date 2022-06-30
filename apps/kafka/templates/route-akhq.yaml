@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: akhq
+spec:
+  entryPoints:
+    - internalhttps
+  routes:
+    - kind: Rule
+      match: {{.Values.dns.hostPrefixRegex}} && PathPrefix(`/akhq`)
+      services:
+        - kind: Service
+          name: {{ .Release.Name }}-akhq
+          passHostHeader: true
+          port: 80
